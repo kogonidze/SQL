@@ -20,21 +20,18 @@ FROM stud
 --------------Task 2-------------------
 SELECT
 	last_name,
-	exm,
+	stud.exm,
 	faculty.faculty_name
 FROM stud
 	JOIN process ON stud.id = process.stud_id 
-		AND stud.exm > (SELECT exm
-						FROM stud
-						WHERE last_name = N'Ботяновский')
 	JOIN hours ON process.hours_id = hours.id
 	JOIN faculty ON hours.faculty_id = faculty.id
-	JOIN (SELECT faculty.faculty_name
+	JOIN (SELECT faculty.faculty_name, stud.exm
 			FROM stud
 				JOIN process ON stud.id = process.stud_id 
 					AND stud.last_name = N'Ботяновский'
 				JOIN hours ON process.hours_id = hours.id
-				JOIN faculty ON hours.faculty_id = faculty.id) tmp ON tmp.faculty_name = faculty.faculty_name
+				JOIN faculty ON hours.faculty_id = faculty.id) tmp ON tmp.faculty_name = faculty.faculty_name AND tmp.exm < stud.exm
 
 ----------------Task 3-----------------
 SELECT
