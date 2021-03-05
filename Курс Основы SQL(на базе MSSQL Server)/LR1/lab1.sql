@@ -1,97 +1,168 @@
-﻿create database Kotok COLLATE Cyrillic_General_CI_AS
+﻿CREATE DATABASE Kotok COLLATE Cyrillic_General_CI_AS
+GO
 
-use Kotok
+USE Kotok;
 
 ------------- Task 1 ----------
-
-create table Students(
-id int not null identity,
-name nvarchar(50) not null,
-lastName nvarchar(50) not null,
-patronymic nvarchar(50) not null,
-groupId int,
-birthDate date not null,
-CONSTRAINT PK_Students Primary key(id)
+CREATE TABLE Students
+(
+	id INT NOT NULL IDENTITY,
+	name NVARCHAR(50) NOT NULL,
+	lastName NVARCHAR(50) NOT NULL,
+	patronymic NVARCHAR(50) NOT NULL,
+	groupId INT,
+	birthDate DATE NOT NULL,
+	CONSTRAINT PK_Students PRIMARY KEY(id)
 );
 
-create table Groups(
-id int not null identity,
-groupNumber nvarchar(20) not null,
-course int not null,
-CONSTRAINT PK_Groups Primary key(id)
+CREATE TABLE Groups
+(
+	id INT NOT NULL IDENTITY,
+	groupNumber NVARCHAR(20) NOT NULL,
+	course INT NOT NULL,
+	CONSTRAINT PK_Groups PRIMARY KEY(id)
 );
 
-create table Plans(
-groupId int not null,
-subjectId int not null,
-CONSTRAINT PK_Plans Primary key(groupId, subjectId)
+CREATE TABLE Plans
+(
+	groupId INT NOT NULL,
+	subjectId INT NOT NULL,
+	CONSTRAINT PK_Plans PRIMARY KEY(groupId, subjectId)
 );
 
-create table Subjects(
-id int not null identity,
-subjectName nvarchar(50) not null,
-numbersOfHours int not null,
-CONSTRAINT PK_Subjects Primary key(id)
+CREATE TABLE Subjects
+(
+	id INT NOT NULL identity,
+	subjectName NVARCHAR(50) NOT NULL,
+	numbersOfHours INT NOT NULL,
+	CONSTRAINT PK_Subjects PRIMARY KEY(id)
 );
+GO
 
 --------------Task 2-----------------
 
-Alter table Students add CONSTRAINT FK_to_Groups foreign key (groupId) references Groups(id)
-Alter table Plans add CONSTRAINT FK_to_Subjects foreign key(subjectId) references Subjects(id)
-Alter table Plans add CONSTRAINT FK_to_GroupsFromPlans foreign key(groupId) references Groups(id)
+ALTER TABLE Students 
+ADD CONSTRAINT FK_to_Groups FOREIGN KEY (groupId) REFERENCES Groups(id)
+
+ALTER TABLE Plans
+ADD CONSTRAINT FK_to_Subjects FOREIGN KEY(subjectId) REFERENCES Subjects(id)
+
+ALTER TABLE Plans 
+ADD CONSTRAINT FK_to_GroupsFromPlans FOREIGN KEY(groupId) REFERENCES Groups(id)
+GO
 
 --------------Task 3-----------------
+INSERT INTO Subjects
+VALUES
+('Физика', 200), 
+('Математика', 120), 
+('Основы алгоритмизации', 70),
+('Проектирование БД',130), 
+('Средства визуального программирования', 90), 
+('Объектно-ориентированное программирование', 70)
 
-Insert into Subjects values ('Физика', 200), ('Математика', 120), ('Основы алгоритмизации', 70),
-('Проектирование БД',130), ('Средства визуального программирования', 90), ('Объектно-ориентированное программирование', 70)
+INSERT INTO Groups
+VALUES
+('ПО135', 1),
+('ПО134',1),
+('ПО235',2),
+('ПО335', 3)
 
-Insert into Groups values('ПО135', 1), ('ПО134',1), ('ПО235',2), ('ПО335', 3)
-
-Insert into Students values('П.', 'Федоренко', 'Р.', 1, '19971225'), ('П', 'Михеенок', 'Г.', 2, '19930205'),
-('Н.', 'Савицкаян', '', 3, '19870922'), ('М.', 'Ковальчук', 'Е.', 3, '19920617'), ('Н.', 'Заболотная', 'Г.', 4, '19920618'),
+INSERT INTO Students
+VALUES
+('П.', 'Федоренко', 'Р.', 1, '19971225'),
+('П', 'Михеенок', 'Г.', 2, '19930205'),
+('Н.', 'Савицкаян', '', 3, '19870922'),
+('М.', 'Ковальчук', 'Е.', 3, '19920617'),
+('Н.', 'Заболотная', 'Г.', 4, '19920618'),
 ('Н.', 'Шарапо', '', 4, '19920814')
 
-Insert into Plans values(1,1), (2,1), (1,2), (2,2), (3,3), (3,4), (4,5), (4,6)
+INSERT INTO Plans 
+VALUES
+(1,1), 
+(2,1), 
+(1,2), 
+(2,2), 
+(3,3), 
+(3,4),
+(4,5), 
+(4,6)
+GO
 
 ----- проверка на соответствие созданных таблиц заданию -------
-Select Students.lastName, Students.name, Students.patronymic, Students.birthDate, Groups.groupNumber, Groups.course from Students 
-Inner join Groups
-on Students.groupId = Groups.id
+SELECT
+	Students.lastName, 
+	Students.name, 
+	Students.patronymic, 
+	Students.birthDate, 
+	Groups.groupNumber, 
+	Groups.course 
+FROM Students 
+	JOIN Groups on Students.groupId = Groups.id
 
-Select Distinct Subjects.subjectName, Groups.course, Subjects.numbersOfHours from Subjects
-join Plans
-on Subjects.id = Plans.subjectId
-join Groups
-on Groups.id = Plans.groupId
-Order by course
+SELECT DISTINCT
+	Subjects.subjectName, 
+	Groups.course, 
+	Subjects.numbersOfHours 
+FROM Subjects
+	JOIN Plans ON Subjects.id = Plans.subjectId
+	JOIN Groups ON Groups.id = Plans.groupId
+ORDER BY course
+GO
 
 -------------Task 4-------------------
-Update Students set groupId = 2 where groupId = 1
+UPDATE Students 
+SET groupId = 2 
+WHERE groupId = 1
+GO
 
-select * from Students where groupId = 1
+SELECT *
+FROM Students 
+WHERE groupId = 1
 
 -------------Task 5-------------------
-Delete from Plans where groupId = 1
-Delete from Groups where id = 1
+DELETE FROM Plans
+WHERE groupId = 1
 
-select * from Plans where groupId = 1
-select * from Groups where id = 1
+DELETE FROM Groups
+WHERE id = 1
+GO
+
+SELECT *
+FROM Plans
+WHERE groupId = 1
+
+SELECT * 
+FROM Groups 
+WHERE id = 1
 
 -------------Task 6-------------------
-Update Subjects set numbersOfHours = 30 where subjectName = 'Средства визуального программирования' 
-or subjectName = 'Объектно-ориентированное программирование'
+UPDATE Subjects 
+SET numbersOfHours = 30 
+WHERE subjectName = 'Средства визуального программирования' 
+	OR subjectName = 'Объектно-ориентированное программирование'
+GO
 
-select * from Subjects
+SELECT * 
+FROM Subjects
 
 -------------Task 7-------------------
-Alter table Subjects Add FormOfControl nvarchar(50) default('Экзамен') with values
+ALTER TABLE Subjects
+ADD FormOfControl NVARCHAR(50) DEFAULT('Экзамен') WITH VALUES
+GO
 
-Update Subjects set FormOfControl = 'Зачет' where subjectName = 'Основы алгоритмизации'
+UPDATE Subjects
+SET FormOfControl = 'Зачет' 
+WHERE subjectName = 'Основы алгоритмизации'
+GO
 
-select * from Subjects
+SELECT * 
+FROM Subjects
 
 -------------Task 8-------------------
+ALTER TABLE Students 
+DROP COLUMN patronymic
+GO
 
-Alter table Students Drop column patronymic
-
-select * from Students
+SELECT *
+FROM Students

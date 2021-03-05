@@ -1,91 +1,118 @@
 ﻿--------------Task 1--------------------
-Select last_name 
-From stud
-Where last_name LIKE N'%б%' or last_name LIKE N'%о%'
+SELECT last_name 
+FROM stud
+WHERE last_name LIKE N'%б%'
+	OR last_name LIKE N'%о%'
 
 --------------Task 2--------------------
-Select * 
-From stud
-Where last_name LIKE N'К%' and s_name IS NULL
+SELECT * 
+FROM stud
+WHERE last_name LIKE N'К%' 
+	AND s_name IS NULL
 
 --------------Task 3---------------------
-Select *
-From stud
-Where len(last_name) >= 8
+SELECT *
+FROM stud
+WHERE LEN(last_name) >= 8
 
 --или
 
-Select *
-From stud
-Where last_name LIKE '________%'
+SELECT *
+FROM stud
+WHERE last_name LIKE '________%'
 
 --------------Task 4----------------------
-Select *
-From stud
-Where len(last_name) <> 7 and last_name LIKE N'%а%'
+SELECT *
+FROM stud
+WHERE LEN(last_name) <> 7 
+	AND last_name LIKE N'%а%'
 
 --или
 
-Select *
-From stud
-Where len(last_name) != 7 and last_name LIKE N'%а%'
+SELECT *
+FROM stud
+WHERE LEN(last_name) != 7 
+	AND last_name LIKE N'%а%'
 
 --------------Task 5-----------------------
-Select *
-From stud
-Where faculty=N'ФПМ' and form=N'очная' and (year=1 or year=2)
-Order by s_name
+SELECT *
+FROM stud
+WHERE faculty=N'ФПМ' 
+	AND form=N'очная' 
+	AND (year=1 OR year=2)
+ORDER BY s_name
 
 --------------Task 6-----------------------
-Select *
-From stud
-Where faculty=N'ФПК' and form=N'заочная' and exm > 6
-Order by exm desc
+SELECT *
+FROM stud
+WHERE faculty=N'ФПК' 
+	AND form=N'заочная' 
+	AND exm > 6
+ORDER BY exm DESC
 
 --------------Task 7------------------------
-Select distinct last_name, faculty, form 
-From teach
-Where faculty=N'ФПК'
-Order by form, last_name
+SELECT DISTINCT
+	last_name, 
+	faculty, 
+	form 
+FROM teach
+WHERE faculty=N'ФПК'
+ORDER BY form, last_name
 
 --------------Task 8------------------------
-Select distinct last_name
-From teach
-Where faculty=N'ФПМ' and year=1 and hours>100
+SELECT DISTINCT last_name
+FROM teach
+WHERE faculty=N'ФПМ' 
+	AND year=1 AND hours>100
 
 --------------Task 9------------------------
-Select distinct last_name
-From teach
-Where s_name IS NULL and DATEDIFF(day, start_work_date, GETDATE())/365 > 3
+SELECT DISTINCT last_name
+FROM teach
+WHERE s_name IS NULL 
+	AND DATEDIFF(day, start_work_date, GETDATE())/365 > 3
 
 --------------Task 10-----------------------
-Select distinct subj
-From teach
-Where faculty=N'ФПМ' and year=3
+SELECT DISTINCT subj
+FROM teach
+WHERE faculty=N'ФПМ' 
+	AND year=3
 
 --------------Task 11-----------------------
-Select subj, year, form, f_name+' '+s_name+' '+last_name as N'ФИО'
-From teach
-Where faculty=N'ФПК' and hours>100
+SELECT 
+	subj, 
+	year, 
+	form, 
+	f_name+' '+s_name+' '+last_name AS N'ФИО'
+FROM teach
+WHERE faculty=N'ФПК' 
+	AND hours>100
 
 --------------Task 12-----------------------
-Select subj, faculty, year, form, f_name+' '+last_name as N'ФИО'
-From teach
-Where s_name IS NULL
+SELECT 
+	subj, 
+	faculty, 
+	year, 
+	form, 
+	f_name+' '+last_name AS N'ФИО'
+FROM teach
+WHERE s_name IS NULL
 
 --------------Task 13-----------------------
-Select distinct last_name
-From teach
-Where DATEDIFF(day, br_date, '20210101')/365 > 30
+SELECT DISTINCT last_name
+FROM teach
+WHERE DATEDIFF(day, br_date, '20210101')/365 > 30
 
 --------------Task 14-----------------------
-Select distinct last_name
-From teach
-Where DATEDIFF(day, br_date, GETDATE())/365 between 35 and 40
-Order by last_name
+SELECT DISTINCT last_name
+FROM teach
+WHERE DATEDIFF(day, br_date, GETDATE())/365 BETWEEN 35 AND 40
+ORDER BY last_name
 
 --------------Task 15-----------------------
-Select distinct last_name, br_date
-From teach
-Where MONTH(br_date) = 10
-Order by br_date
+SELECT DISTINCT 
+	last_name, 
+	br_date
+FROM teach
+WHERE MONTH(br_date) = 10
+ORDER BY br_date
+
